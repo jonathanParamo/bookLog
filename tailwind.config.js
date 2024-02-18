@@ -3,6 +3,7 @@ module.exports = {
   content: [
     "./src/**/*.js",
     "./src/**/*.jsx",
+    "./src/index.js"
   ],
   theme: {
     screens: {

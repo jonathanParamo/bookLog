@@ -3,18 +3,18 @@ import {
   BrowserRouter
   as
   Router,
-  // Route,
+  Route,
   Routes
   } from 'react-router-dom';
-
+import SignupComponent from './pages/Signup';
+import SigninComponent from './pages/Signin';
 
 function App() {
   return (
     <Router>
-        <p className='text-black'>Hola mundo</p>
       <Routes>
-        {/* <Route path="/" exact component={} /> */}
-        {/* <Route path="/about" component={} /> */}
+        <Route path="/" element={<SignupComponent />} />
+        <Route path="/signin" element={<SigninComponent />} />
       </Routes>
     </Router>
   );
