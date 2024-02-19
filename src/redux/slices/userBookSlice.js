@@ -8,10 +8,11 @@ export const userBooksSlice = createSlice({
       username: "",
       email: "",
       profile_image: "",
-      reserved_book_title: "",
-      reserved_book_author: "",
+      reserved_books: [],
     },
     isLoading: false,
+    returnBook: [],
+    getBooks: [],
   },
   reducers: {
     startLoading: (state, action) => {
@@ -20,10 +21,20 @@ export const userBooksSlice = createSlice({
     setAddUserInfo: (state, action) => {
       const { user } = action.payload;
       state.userSignin = user;
-    }
-  }
+    },
+    returnBook: (state, action) => {
+      // Actualiza el estado según la acción de devolver el libro
+      const { bookId } = action.payload;
+      state.returnBook = bookId
+      state.userSignin.reserved_books = state.userSignin.reserved_books.filter(book => book.book_id !== bookId);
+    },
+    getBooks: (state, action) => {
+      const { books } = action.payload;
+      state.getBooks = books;
+    },
+  },
 });
 
-export const { setAddUserInfo } = userBooksSlice.actions;
+export const { setAddUserInfo, returnBook, getBooks } = userBooksSlice.actions;
 
 export default userBooksSlice.reducer;

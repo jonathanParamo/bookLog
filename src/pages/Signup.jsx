@@ -23,7 +23,7 @@ const SignupComponent = () => {
 
       if (result.data.success) {
         localStorage.setItem('token', result.data.token);
-        navigate('/user');
+        navigate('/profile');
       } else {
         const errorMessage = result.error || "All fields are required";
         setError(`Error: ${errorMessage}`);

@@ -2,6 +2,7 @@ import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { FaSignInAlt } from 'react-icons/fa';
 import { enterUser } from '../redux/slices/thrunks';
+import { useNavigate } from 'react-router';
 
 const SigninComponent = () => {
   const [username, setUsername] = useState('')
@@ -9,6 +10,7 @@ const SigninComponent = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,9 +18,10 @@ const SigninComponent = () => {
 
     try {
       const result = await dispatch(enterUser({ username, password }));
-      localStorage.getItem('token', result.data.token)
+      localStorage.setItem('token', result.data.userData.token)
+      navigate('/profile')
     } catch (error) {
-
+      console.log("error");
       const errorMessage = error.response?.data?.error || "Error validating the data";
 
       setError(errorMessage);
