@@ -13,23 +13,28 @@ const SignupComponent = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
 
+  const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
   const handleSubmit = async (e) => {
+    const isValidEmail = emailRegex.test(email);
+
+    if (!isValidEmail) {
+      return setError('Email is invalid. please try again')
+    }
     e.preventDefault();
     setLoading(true);
 
     const result = await dispatch(createUser({ username, email, password }));
     try {
-      console.log(result);
-
       if (result.data.success) {
         localStorage.setItem('token', result.data.token);
         navigate('/profile');
       } else {
-        const errorMessage = result.error || "All fields are required";
+        const errorMessage = result.error || 'All fields are required';
         setError(`Error: ${errorMessage}`);
       }
     } catch (error) {
-      const errorMessage = error.response?.data?.error || "already registered.";
+      const errorMessage = error.response?.data?.error || 'already registered.';
 
       setError(errorMessage);
     } finally {
@@ -77,17 +82,17 @@ const SignupComponent = () => {
             className='w-full h-12 bg-blue-500 mt-4 text-white p-2 rounded-md'
           >
             {loading ? (
-              <div className="flex items-center justify-center">
-              <div className="border-t-4 border-white border-solid rounded-full h-6 w-6 animate-spin"></div>
+              <div className='flex items-center justify-center'>
+              <div className='border-t-4 border-white border-solid rounded-full h-6 w-6 animate-spin'></div>
             </div>
             ) : (
-              "Signup"
+              'Signup'
             )}
           </button>
         </div>
         </form>
         <div className='w-full mt-12 text-center'>
-          <p>Already have an account? <a href="/signin" className="text-blue-500">Signin</a></p>
+          <p>Already have an account? <a href='/signin' className='text-blue-500'>Signin</a></p>
         </div>
         {error && <p className='w-full text-center mt-9'>{error}</p>}
       </div>

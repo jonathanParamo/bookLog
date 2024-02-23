@@ -4,15 +4,15 @@ export const userSlice = createSlice({
   name: 'user',
   initialState: {
     user: {
-      username: "",
-      email: "",
-      profile_image: "",
+      username: '',
+      email: '',
+      profile_image: '',
       user_id: null,
     },
     isLoading: false,
   },
   reducers: {
-    startLoading: (state, action) => {
+    isLoading: (state) => {
       state.isLoading = true;
     },
     setAddUser: (state, action) => {
@@ -20,8 +20,13 @@ export const userSlice = createSlice({
       state.user = user;
       state.isLoading = isLoading;
     },
-  }
+    isLoading: (state) => {
+      state.isLoading = false;
+    },
+  },
 });
-export const { setAddUser, startLoading } = userSlice.actions;
+
+export const { setAddUser, isLoading } = userSlice.actions;
 
 export default userSlice.reducer;
+

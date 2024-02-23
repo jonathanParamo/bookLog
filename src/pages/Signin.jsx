@@ -18,17 +18,19 @@ const SigninComponent = () => {
 
     try {
       const result = await dispatch(enterUser({ username, password }));
-      localStorage.setItem('token', result.data.userData.token)
+      const token = result.data.token;
+      localStorage.setItem('token', token);
       navigate('/profile')
     } catch (error) {
-      console.log("error");
-      const errorMessage = error.response?.data?.error || "Error validating the data";
+
+      const errorMessage = error.response?.data?.error || 'Error validating the data';
 
       setError(errorMessage);
     } finally {
       setLoading(false);
     }
   };
+
 
   return (
     <div className='w-full min-h-screen bg-black flex justify-center items-center'>
@@ -62,17 +64,17 @@ const SigninComponent = () => {
             className='w-full h-12 bg-blue-500 mt-4 text-white p-2 rounded-md'
           >
             {loading ? (
-              <div className="flex items-center justify-center">
-              <div className="border-t-4 border-white border-solid rounded-full h-6 w-6 animate-spin"></div>
+              <div className='flex items-center justify-center'>
+              <div className='border-t-4 border-white border-solid rounded-full h-6 w-6 animate-spin'></div>
             </div>
             ) : (
-              "Signin"
+              'Signin'
             )}
           </button>
         </div>
         </form>
         <div className='w-full mt-12 text-center'>
-          <p>Don't have an account? <a href="/" className="text-blue-500">Signup</a></p>
+          <p>Don't have an account? <a href='/' className='text-blue-500'>Signup</a></p>
         </div>
         {error && <p className='w-full text-center mt-9'>{error}</p>}
       </div>

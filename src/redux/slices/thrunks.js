@@ -1,27 +1,28 @@
-import { signupApi, signinApi, returnBookApi, getBooksApi } from "../../api/bookApi";
-import { setAddUserInfo } from "./userBookSlice";
-import { startLoading, setAddUser } from "./userSlice";
+import { signupApi, signinApi, returnBookApi } from '../../api/bookApi';
+import { isLoading, setAddUser } from './userSlice';
+import { setAvailableBooks, setReservedBooks, setReturnBook, startLoading } from './userBookSlice';
+import axios from 'axios';
 
 export const createUser = ({ email, password, username }) => {
-  return async( dispatch, getState ) => {
-    dispatch( startLoading() );
+  return async (dispatch, getState) => {
+    dispatch(isLoading());
     try {
       const response = await signupApi.post('/signup', {
         username,
         email,
         password,
       });
-      dispatch(setAddUser({ user: response.data.user, isLoading: false }))
-      return response
-    }  catch (error) {
-      dispatch(startLoading({ isLoading: false }))
+      dispatch(setAddUser({ user: response.data.user, isLoading: false }));
+      return response;
+    } catch (error) {
+      dispatch(isLoading());
     }
   };
 };
 
 export const enterUser = ({ email = '', password, username = '' }) => {
-  return async( dispatch, getState ) => {
-    dispatch( startLoading() );
+  return async (dispatch, getState) => {
+    dispatch(isLoading());
     try {
       const response = await signinApi.post('/signin', {
         username,
@@ -29,20 +30,24 @@ export const enterUser = ({ email = '', password, username = '' }) => {
         password,
       });
       const { user } = response.data.userData;
-      dispatch(setAddUserInfo({ user: user , isLoading: false }));
-      return response
-    }  catch (error) {
-      dispatch(startLoading({ isLoading: false }))
+      const reservedBooks = user.reserved_books
+
+      dispatch(setAddUser({ user, isLoading: false }));
+      dispatch(setReservedBooks({ reservedBooks, isLoading: false }));
+
+      return response;
+    } catch (error) {
+      dispatch(isLoading());
+      return error
     }
-  }
-}
+  };
+};
+
 
 export const returnBook = ({ user_id, book_id, token }) => {
-  console.log(token);
   return async (dispatch, getState) => {
     dispatch(startLoading());
     try {
-      // Utilizar los parámetros userId y book_id en la llamada a la API
       const response = await returnBookApi.post(`/books/${book_id}/return/${user_id}`, {}, {
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -50,16 +55,32 @@ export const returnBook = ({ user_id, book_id, token }) => {
         },
       });
 
-      const { user } = response.data.userData;
-      console.log(user, "user");
-      dispatch(setAddUserInfo({ user: user , isLoading: false }));
+      if(response.status === 200) {
+        dispatch(setReturnBook({ bookId: book_id, startLoading: false }));
+      }
 
       dispatch(startLoading());
       return response;
     } catch (error) {
-      console.error('Error al devolver el libro:', error);
       dispatch(startLoading());
-      // Puedes manejar el error según tus necesidades
+      return
+    }
+  };
+};
+
+
+export const loadUserData = (userId) => {
+  return async (dispatch, getState) => {
+    dispatch(startLoading());
+
+    const response = await axios.get(`/api/user/${userId}/reserved-books`)
+
+    try {
+      const { reservedBooks } = response.data;
+
+      dispatch(setReservedBooks({ reservedBooks }));
+    } catch (error) {
+      dispatch(startLoading());
     }
   };
 };

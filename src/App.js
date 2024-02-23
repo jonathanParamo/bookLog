@@ -15,10 +15,10 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<SignupComponent />} />
-        <Route path="/signin" element={<SigninComponent />} />
-        <Route path="/profile" element={<UserProfile />} />
-        <Route path="/books" element={<Books />} />
+        <Route path='/' element={<SignupComponent />} />
+        <Route path='/signin' element={<SigninComponent />} />
+        <Route path='/profile' element={<UserProfile />} />
+        <Route path='/books' element={<Books />} />
       </Routes>
     </Router>
   );
