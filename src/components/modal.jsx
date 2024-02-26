@@ -49,7 +49,7 @@ const Modal = ({ isOpen, onClose, book_id }) => {
       const result = await response.json();
       const reservedBookInfo = result.reservedBookInfo;
 
-      dispatch(setReservedBooks({ reservedBooks: [reservedBookInfo], isLoading: false }))
+      dispatch(setReservedBooks({ reservedBooks: [reservedBookInfo], availableBooks: [reservedBookInfo]}));
 
       loadUserData(user_id);
 
@@ -61,7 +61,8 @@ const Modal = ({ isOpen, onClose, book_id }) => {
 
       return reservedBookInfo;
     } catch (error) {
-      setMessage(error);
+      const errorMessage = error.message || 'An error occurred.';
+      setMessage(errorMessage);
     }
   };
 

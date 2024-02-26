@@ -22,7 +22,6 @@ const SigninComponent = () => {
       localStorage.setItem('token', token);
       navigate('/profile')
     } catch (error) {
-
       const errorMessage = error.response?.data?.error || 'Error validating the data';
 
       setError(errorMessage);

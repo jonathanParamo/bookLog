@@ -13,16 +13,16 @@ const UserProfile = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
   const noImgageProfile = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:'+
-  'ANd9GcQfSZK21IXaEpBtXBE4-99_n0PzaYw4ZJS1oRpbEhCtFJkdbb9j1bgP_VvVGL_bb4iDKoU&usqp=CAU'
+  'ANd9GcQfSZK21IXaEpBtXBE4-99_n0PzaYw4ZJS1oRpbEhCtFJkdbb9j1bgP_VvVGL_bb4iDKoU&usqp=CAU';
 
   useEffect(() => {
     if (!token) {
       navigate('/')
     }
     loadUserData(user_id)
-  }, [token, navigate])
+  }, [token, navigate]);
 
-  const handleReturnClick = async (e, book_id, user_id) => {
+  const handleReturnClick = async (e, book_id, user_id, token) => {
     e.preventDefault();
     setLoading(true);
     const result = await dispatch(returnBook({book_id, user_id, token}));
@@ -77,7 +77,7 @@ const UserProfile = () => {
                   <td className='lg:w-2/5 text-white pl-2 lg:pl-8 border border-white md:text-xl lg:text-2xl'>{title}</td>
                   <td className='text-white pl-3 lg:pl-8 border border-white md:text-xl lg:text-2xl'>{author}</td>
                   <td className='text-white pl-3 lg:pl-8 border border-white md:text-xl lg:text-2xl'>
-                    <button onClick={(e) => handleReturnClick(e, book_id, user_id)}>{loading? 'loading' : 'return'}</button>
+                    <button onClick={(e) => handleReturnClick(e, book_id, user_id, token)}>{loading? 'loading' : 'return'}</button>
                   </td>
                 </tr>
               </tbody>

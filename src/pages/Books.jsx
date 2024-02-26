@@ -54,7 +54,7 @@ const Books = () => {
       return result.books;
     };
 
-    fetchBooks();
+    if (!books || books.length === 0 ) fetchBooks();
 
   }, [token, navigate, dispatch, books]);
 

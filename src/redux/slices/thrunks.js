@@ -1,6 +1,6 @@
 import { signupApi, signinApi, returnBookApi } from '../../api/bookApi';
 import { isLoading, setAddUser } from './userSlice';
-import { setAvailableBooks, setReservedBooks, setReturnBook, startLoading } from './userBookSlice';
+import { setReservedBooks, setReservedBooksInfo, setReturnBook, startLoading } from './userBookSlice';
 import axios from 'axios';
 
 export const createUser = ({ email, password, username }) => {
@@ -33,7 +33,7 @@ export const enterUser = ({ email = '', password, username = '' }) => {
       const reservedBooks = user.reserved_books
 
       dispatch(setAddUser({ user, isLoading: false }));
-      dispatch(setReservedBooks({ reservedBooks, isLoading: false }));
+      dispatch(setReservedBooksInfo({ reservedBooks: reservedBooks, isLoading: false }));
 
       return response;
     } catch (error) {
