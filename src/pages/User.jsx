@@ -76,8 +76,9 @@ const UserProfile = () => {
                 <tr key={book_id}>
                   <td className='lg:w-2/5 text-white pl-2 lg:pl-8 border border-white md:text-xl lg:text-2xl'>{title}</td>
                   <td className='text-white pl-3 lg:pl-8 border border-white md:text-xl lg:text-2xl'>{author}</td>
-                  <td className='text-white pl-3 lg:pl-8 border border-white md:text-xl lg:text-2xl'>
-                    <button onClick={(e) => handleReturnClick(e, book_id, user_id, token)}>{loading? 'loading' : 'return'}</button>
+                  <td className='text-white pl-3 lg:pl-8 border border-white md:text-xl lg:text-2xl hover:bg-red-600 cursor-pointer'>
+                    <button
+                      onClick={(e) => handleReturnClick(e, book_id, user_id, token)}>{loading? 'loading' : 'return'}</button>
                   </td>
                 </tr>
               </tbody>
@@ -88,7 +89,7 @@ const UserProfile = () => {
         }
       </div>
       <div className='w-full flex justify-end mt-8'>
-        <button className='bg-white text-black w-[280px] h-6' onClick={() => navigate('/books')}>Books</button>
+        <button className='bg-blue-800 text-white w-[200px] md:w-[280px] h-8 rounded' onClick={() => navigate('/books')}>Books</button>
       </div>
       {message && <p className='text-black'>{message}</p>}
     </div>

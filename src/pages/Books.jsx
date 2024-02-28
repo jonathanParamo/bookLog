@@ -13,13 +13,15 @@ const Books = () => {
   const dispatch = useDispatch();
   const books = useSelector((store) => store.userBooks.availableBooks)
 
-  const openModal = (book_id) => {
+  const openModal = () => {
     setIsModalOpen(true);
   };
 
   const closeModal = () => {
-    setIsModalOpen(false);
-    setSelectedBookId(null);
+    setTimeout(() => {
+      setIsModalOpen(false);
+      setSelectedBookId(null);
+    }, 0);
   };
 
   useEffect(() => {
@@ -62,7 +64,7 @@ const Books = () => {
 
   return (
     <div className='min-h-screen bg-black mt-0'>
-      <div className='w-full flex flex-col items-center justify-center '>
+      <div className='w-full flex flex-col items-center justify-center p-2 md:p-8 text-sm md:text-lg'>
         <h3 className='text-white text-base md:text-2xl lg:text-5xl'>Available books</h3>
         {isData ?
           <table className='w-full text-white border border-white mt-8'>
@@ -99,7 +101,8 @@ const Books = () => {
                       setSelectedBookId(book_id);
                       openModal(book_id);
                     }}
-                    className='text-white pl-3 lg:pl-8 border border-white md:text-xl lg:text-2xl'>
+                    className='text-white pl-3 lg:pl-8 border border-white md:text-xl lg:text-2xl hover:bg-blue-500 cursor-pointer'
+                    >
                     Reserved
 
                     {selectedBookId ? (
@@ -117,6 +120,9 @@ const Books = () => {
           :
           <p className='text-white mt-2'>At this moment, there are no available books. Please try again later.</p>
         }
+        <div className='w-full m-4 flex justify-end mt-8'>
+          <button className='bg-blue-800 text-white w-[200px] md:w-[280px] h-8 rounded' onClick={() => navigate(-1)}>Back</button>
+        </div>
       </div>
     </div>
   )

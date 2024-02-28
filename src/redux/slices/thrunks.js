@@ -56,17 +56,14 @@ export const returnBook = ({ user_id, book_id, token }) => {
       });
 
       if(response.status === 200) {
-        dispatch(setReturnBook({ bookId: book_id, startLoading: false }));
+        dispatch(setReturnBook({ bookId: book_id }));
       }
-
-      dispatch(startLoading());
-      return response;
     } catch (error) {
-      dispatch(startLoading());
-      return
+      return ("Error returning the book:", error);
     }
   };
 };
+
 
 
 export const loadUserData = (userId) => {
