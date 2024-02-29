@@ -14,3 +14,9 @@ export const signinApi = axios.create({
   },
 });
 
+export const returnBookApi = axios.create({
+  baseURL: 'http://localhost:8080',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
