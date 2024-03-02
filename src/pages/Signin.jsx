@@ -18,11 +18,11 @@ const SigninComponent = () => {
 
     try {
       const result = await dispatch(enterUser({ username, password }));
-      const token = result.data.token;
-      localStorage.setItem('token', token);
+      const token = result.data?.token;
+      localStorage.setItem ('token', token);
       navigate('/profile')
     } catch (error) {
-      const errorMessage = error.response?.data?.error || 'Error validating the data';
+      const errorMessage = error.response?.data?.error || `Error validating the data ${error}`;
 
       setError(errorMessage);
     } finally {
@@ -33,7 +33,7 @@ const SigninComponent = () => {
 
   return (
     <div className='w-full min-h-screen bg-black flex justify-center items-center'>
-      <div className='w-11/12 md:w-2/3 lg:w-2/6 bg-white rounded h-[600px] p-9 flex flex-col justify-center items-center'>
+      <div className='w-11/12 md:w-2/3 lg:w-[700px] bg-white rounded h-[600px] p-9 flex flex-col justify-center items-center'>
         <FaSignInAlt size={80} className='text-gray-900 mb-12'/>
         <form className='w-full flex flex-col'>
           <label htmlFor='username' className='mb-2'>Username:</label>

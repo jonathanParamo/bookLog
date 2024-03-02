@@ -1,5 +1,5 @@
 import { signupApi, signinApi, returnBookApi } from '../../api/bookApi';
-import { isLoading, setAddUser } from './userSlice';
+import { isLoading, setAddUser, stopLoading } from './userSlice';
 import { setReservedBooks, setReservedBooksInfo, setReturnBook, startLoading } from './userBookSlice';
 import axios from 'axios';
 
@@ -15,7 +15,7 @@ export const createUser = ({ email, password, username }) => {
       dispatch(setAddUser({ user: response.data.user, isLoading: false }));
       return response;
     } catch (error) {
-      dispatch(isLoading());
+      dispatch(stopLoading());
     }
   };
 };
@@ -37,7 +37,7 @@ export const enterUser = ({ email = '', password, username = '' }) => {
 
       return response;
     } catch (error) {
-      dispatch(isLoading());
+      dispatch(stopLoading());
       return error
     }
   };
@@ -56,6 +56,7 @@ export const returnBook = ({ user_id, book_id, token }) => {
       });
 
       if(response.status === 200) {
+        console.log(response);
         dispatch(setReturnBook({ bookId: book_id }));
       }
     } catch (error) {

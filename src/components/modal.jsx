@@ -13,14 +13,11 @@ const Modal = ({ isOpen, onClose, book_id }) => {
   const [message, setMessage] = useState('');
   const books = useSelector((store) => store.userBooks.availableBooks);
 
-  const findBook = (books, bookId) => {
 
-    const findBook = books.find((book) => bookId === book.book_id);
-    if (findBook) {
-      return findBook;
-    } else {
-      return 'book not found';
-    }
+  const findBook = (books, bookId) => {
+    const book = books.find((book) => bookId === book.book_id);
+
+    return book || { title: '', author: '', image_book: '', description: '' };
   }
 
   const bookFiltered = findBook(books, book_id)
@@ -67,7 +64,7 @@ const Modal = ({ isOpen, onClose, book_id }) => {
   };
 
   const { title, author, image_book, description, } = bookFiltered;
-
+  console.log(bookFiltered);
 
   return (
     <div className={`${modalClasses}`}>
@@ -82,7 +79,7 @@ const Modal = ({ isOpen, onClose, book_id }) => {
             }}
             aria-hidden='true'
           />
-          <div className='relative z-10 w-9/12 h-[650px] bg-white p-4 rounded-lg shadow-md w-96 overflow-auto'>
+          <div className='relative z-10 w-9/12 h-[650px] bg-white p-4 rounded-lg shadow-md overflow-auto'>
             <div className='flex flex-col justify-between items-center m-4'>
               <h2 className='text-2xl font-bold text-black'>{title.toUpperCase()}</h2>
               <p className='text-gray-600 text-xl'>Author:</p>
@@ -96,13 +93,13 @@ const Modal = ({ isOpen, onClose, book_id }) => {
                 className='w-[320px] h-[240px] md:w-[300px] md:h-[370px] h-48 w-96 mt-4 rounded-md p-2 border-2 border-blue-500 bg-blue-500'
               />
             </div>
-            <div className='w-full h-28 flex flex-row justify-between pl-4 pr-4'>
-              <button className='w-80 h-8 mt-6 text-white hover:text-gray-700 bg-blue-500' onClick={() => onClose()}>
+            <div className='w-full h-12 flex flex-row justify-between pl-4 pr-4'>
+              <button className='w-2/5 h-8 mt-6 text-white bg-violet-900 hover:bg-violet-600' onClick={() => onClose()}>
                 Close
               </button>
               <button
-                onClick={(e) => handleBookReserved(e, book_id, user_id, token,)}
-                className='w-80 h-8 mt-6 text-white hover:text-gray-700 bg-blue-500'
+                onClick={(e) => handleBookReserved(e, book_id, user_id, token)}
+                className='w-2/5 h-8 mt-6 text-white bg-blue-900 hover:bg-blue-600'
               >
                 Reserve
               </button>

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { returnBook } from '../redux/slices/thrunks';
 import { loadUserData } from '../redux/slices/thrunks';
+import Table from '../components/Table'
 
 const UserProfile = () => {
   const navigate = useNavigate();
@@ -22,10 +23,11 @@ const UserProfile = () => {
     loadUserData(user_id)
   }, [token, navigate]);
 
-  const handleReturnClick = async (e, book_id, user_id, token) => {
+  const handleReturnBook = async (e, book_id, user_id, token) => {
     e.preventDefault();
     setLoading(true);
     const result = await dispatch(returnBook({book_id, user_id, token}));
+    console.log(result, "result");
 
     try {
       if (result.data.success) {
@@ -50,12 +52,13 @@ const UserProfile = () => {
 
   return (
     <div className='min-h-screen bg-black flex flex-col p-4 md:p-8'>
-      <div className='w-full h-64 flex flex-row justify-between'>
+      <div className='w-full h-52 md:h-72 flex flex-row justify-between'>
         <div className='w-36 md:w-72 lg:w-1/3 flex flex-col'>
           <p className='text-white text-base md:text-2xl lg:text-5xl'>Username: {username}</p>
           <p className='text-white text-base md:text-2xl lg:text-5xl'>My reservations: {reservedBooks ? reservedBooks.length : 0}</p>
         </div>
         <img
+          className='w-[190px] md:w-[280px] h-[190px] md:h-[280px] rounded'
           src={profile_image || noImgageProfile}
           alt='Perfil del usuario'
         />
@@ -71,17 +74,17 @@ const UserProfile = () => {
               <th className='border border-white md:text-xl lg:text-3xl'>Action</th>
             </tr>
           </thead>
-            {reservedBooks.map(({ title, book_id, author, user_id}) => (
-              <tbody>
-                <tr key={book_id}>
-                  <td className='lg:w-2/5 text-white pl-2 lg:pl-8 border border-white md:text-xl lg:text-2xl'>{title}</td>
-                  <td className='text-white pl-3 lg:pl-8 border border-white md:text-xl lg:text-2xl'>{author}</td>
-                  <td className='text-white pl-3 lg:pl-8 border border-white md:text-xl lg:text-2xl hover:bg-red-600 cursor-pointer'>
-                    <button
-                      onClick={(e) => handleReturnClick(e, book_id, user_id, token)}>{loading? 'loading' : 'return'}</button>
-                  </td>
-                </tr>
-              </tbody>
+            {reservedBooks.map(({ title, book_id, author, user_id }) => (
+              <Table
+                title={title}
+                book_id={book_id}
+                author={author}
+                user_id={user_id}
+                onClick={(e) => handleReturnBook(e, book_id, user_id, token)}
+                token={token}
+                loading={loading}
+                buttonText={loading ? 'Loading' : 'Return'}
+              />
             ))}
           </table>
           :
@@ -89,7 +92,12 @@ const UserProfile = () => {
         }
       </div>
       <div className='w-full flex justify-end mt-8'>
-        <button className='bg-blue-800 text-white w-[200px] md:w-[280px] h-8 rounded' onClick={() => navigate('/books')}>Books</button>
+        <button
+          className='bg-blue-600 text-white w-[200px] md:w-[280px] h-8 rounded transition delay-300 hover:bg-blue-900'
+          onClick={() => navigate('/books')}
+        >
+          Books
+        </button>
       </div>
       {message && <p className='text-black'>{message}</p>}
     </div>
