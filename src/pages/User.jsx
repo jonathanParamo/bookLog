@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { returnBook } from '../redux/slices/thrunks';
 import { loadUserData } from '../redux/slices/thrunks';
-import Table from '../components/Table'
+import Modal from '../components/Modal';
+import Table from '../components/Table';
 
 const UserProfile = () => {
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ const UserProfile = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const noImgageProfile = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:'+
   'ANd9GcQfSZK21IXaEpBtXBE4-99_n0PzaYw4ZJS1oRpbEhCtFJkdbb9j1bgP_VvVGL_bb4iDKoU&usqp=CAU';
 
@@ -22,6 +24,16 @@ const UserProfile = () => {
     }
     loadUserData(user_id)
   }, [token, navigate]);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setTimeout(() => {
+      setIsModalOpen(false);
+    }, 0);
+  };
 
   const handleReturnBook = async (e, book_id, user_id, token) => {
     e.preventDefault();
@@ -50,17 +62,27 @@ const UserProfile = () => {
   const isData = dataUser && dataUser.user && reservedBooks && reservedBooks.length > 0 &&
     reservedBooks.some(book => book.title !== null && book.author !== null && book.book_id !== null);
 
+  const matchUsedId = user_id === 2;
+
   return (
     <div className='min-h-screen bg-black flex flex-col p-4 md:p-8'>
       <div className='w-full h-52 md:h-72 flex flex-row justify-between'>
         <div className='w-36 md:w-72 lg:w-1/3 flex flex-col'>
           <p className='text-white text-base md:text-2xl lg:text-5xl'>Username: {username}</p>
           <p className='text-white text-base md:text-2xl lg:text-5xl'>My reservations: {reservedBooks ? reservedBooks.length : 0}</p>
+          {matchUsedId &&
+            <button
+              className='w-80 h-8 md:w-3/5 mt-2 text-black bg-cyan-500 rounded hover:bg-cyan-600'
+              onClick={() => openModal(true)}
+            >
+              Create Book
+            </button>
+          }
         </div>
         <img
           className='w-[190px] md:w-[280px] h-[190px] md:h-[280px] rounded'
           src={profile_image || noImgageProfile}
-          alt='Perfil del usuario'
+          alt='UserProfile'
         />
       </div>
       <div className='w-full mt-4 flex flex-col items-center justify-center '>
@@ -99,6 +121,12 @@ const UserProfile = () => {
           Books
         </button>
       </div>
+      {isModalOpen ? (
+        <Modal
+          isOpen={isModalOpen}
+          onClose={closeModal}
+        />
+      ): ''}
       {message && <p className='text-black'>{message}</p>}
     </div>
   )

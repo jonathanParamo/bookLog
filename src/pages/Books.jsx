@@ -13,6 +13,7 @@ const Books = () => {
   const dispatch = useDispatch();
   const books = useSelector((store) => store.userBooks.availableBooks);
   const [getBooks, setGetBooks] = useState(false);
+  console.log(books);
 
   const fetchCategoryBooks = async (selectedValue, token) => {
     const url = `http://localhost:8080/books/category/${selectedValue}`
@@ -54,7 +55,7 @@ const Books = () => {
   };
 
   const handleChangeBooks = () => {
-    setGetBooks(true)
+    setGetBooks(true);
   }
 
   useEffect(() => {
@@ -98,7 +99,6 @@ const Books = () => {
   }, [token, navigate, dispatch, books, getBooks]);
 
   const isData = books && Array.isArray(books) && books.length > 0;
-  console.log(books, "books desde books");
 
   return (
     <div className='min-h-screen bg-black mt-0'>
@@ -134,24 +134,24 @@ const Books = () => {
           </thead>
             {books.map(({ title, book_id, author }) => (
               <>
-              <Table
-                title={title}
-                book_id={book_id}
-                author={author}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setSelectedBookId(book_id);
-                  openModal(book_id)
-                }}
-                buttonText='Reserved'
-              />
-              {selectedBookId ? (
-                <Modal
-                  isOpen={isModalOpen}
-                  onClose={closeModal}
-                  book_id={selectedBookId}
+                <Table
+                  title={title}
+                  book_id={book_id}
+                  author={author}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedBookId(book_id);
+                    openModal(book_id)
+                  }}
+                  buttonText='Reserved'
                 />
-              ): ''}
+                {selectedBookId ? (
+                  <Modal
+                    isOpen={isModalOpen}
+                    onClose={closeModal}
+                    book_id={selectedBookId}
+                  />
+                ): ''}
               </>
             ))}
           </table>
