@@ -13,7 +13,6 @@ const Books = () => {
   const dispatch = useDispatch();
   const books = useSelector((store) => store.userBooks.availableBooks);
   const [getBooks, setGetBooks] = useState(false);
-  console.log(books);
 
   const fetchCategoryBooks = async (selectedValue, token) => {
     const url = `http://localhost:8080/books/category/${selectedValue}`

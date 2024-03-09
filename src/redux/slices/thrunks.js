@@ -56,7 +56,6 @@ export const returnBook = ({ user_id, book_id, token }) => {
       });
 
       if(response.status === 200) {
-        console.log(response);
         dispatch(setReturnBook({ bookId: book_id }));
       }
     } catch (error) {
