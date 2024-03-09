@@ -1,9 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
 import Modal from '../components/Modal';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAvailableBooks } from '../redux/slices/userBookSlice';
+import Table from '../components/Table';
 
 const Books = () => {
   const token = localStorage.getItem('token');
@@ -11,7 +11,37 @@ const Books = () => {
   const [selectedBookId, setSelectedBookId] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useDispatch();
-  const books = useSelector((store) => store.userBooks.availableBooks)
+  const books = useSelector((store) => store.userBooks.availableBooks);
+  const [getBooks, setGetBooks] = useState(false);
+  console.log(books);
+
+  const fetchCategoryBooks = async (selectedValue, token) => {
+    const url = `http://localhost:8080/books/category/${selectedValue}`
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'authorization': `bearer ${token}`,
+        'contet-type': 'application/json'
+      },
+    });
+
+    if(!response.ok) {
+      throw new Error('Error fetching books category');
+    }
+
+    const result = await response.json();
+    return result.categoryBooks
+  }
+
+  const categoryBooks = async (selectedValue) => {
+    const result = await fetchCategoryBooks(selectedValue, token)
+    dispatch(setAvailableBooks({ availableBooks: result, isLoading: false }));
+
+  }
+
+  const handleChange = (event) => {
+    categoryBooks(event.target.value);
+  };
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -23,6 +53,10 @@ const Books = () => {
       setSelectedBookId(null);
     }, 0);
   };
+
+  const handleChangeBooks = () => {
+    setGetBooks(true);
+  }
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -56,9 +90,13 @@ const Books = () => {
       return result.books;
     };
 
-    if (!books || books.length === 0 ) fetchBooks();
+    if (Array.isArray(books) && books.length === 0) fetchBooks();
 
-  }, [token, navigate, dispatch, books]);
+    if (getBooks === true) {
+      fetchBooks();
+      setGetBooks(false);
+    }
+  }, [token, navigate, dispatch, books, getBooks]);
 
   const isData = books && Array.isArray(books) && books.length > 0;
 
@@ -66,6 +104,25 @@ const Books = () => {
     <div className='min-h-screen bg-black mt-0'>
       <div className='w-full flex flex-col items-center justify-center p-2 md:p-8 text-sm md:text-lg'>
         <h3 className='text-white text-base md:text-2xl lg:text-5xl'>Available books</h3>
+        <seccion
+          className='w-full flex justify-end bg-black mt-2 md:mt-6'
+        >
+          <seccion className='border border-blue-600 p-1 rounded'>
+            <label className='text-white bg-black mr-2' for='books'>Search for category</label>
+            <select className='text-white bg-black w-[200px] md:w-[240px]'
+              name='Books' id='books'  onChange={handleChange}
+            >
+              <option>Select a category</option>
+              <option value='coming-of-age'>Coming of age</option>
+              <option value='love'>Love</option>
+              <option value='science-fiction'>Science fiction</option>
+              <option value='fantasy'>Fantasy</option>
+              <option value='epic-fantasy'>Epic fantasy</option>
+              <option value='mistery-and-suspense'>Mistery/Suspense</option>
+            </select>
+          </seccion>
+        </seccion>
+
         {isData ?
           <table className='w-full text-white border border-white mt-8'>
           <thead className='border border-white'>
@@ -76,52 +133,44 @@ const Books = () => {
             </tr>
           </thead>
             {books.map(({ title, book_id, author }) => (
-              <tbody>
-                <tr key={book_id}>
-                  <td onClick={(e) => {
+              <>
+                <Table
+                  title={title}
+                  book_id={book_id}
+                  author={author}
+                  onClick={(e) => {
                     e.stopPropagation();
                     setSelectedBookId(book_id);
-                    openModal(book_id)}}
-                    className='lg:w-2/5 text-white pl-2 lg:pl-8 border border-white md:text-xl lg:text-2xl'
-                  >
-                    {title}
-                  </td>
-                  <td
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setSelectedBookId(book_id);
-                      openModal(book_id);
-                    }}
-                    className='text-white pl-3 lg:pl-8 border border-white md:text-xl lg:text-2xl'>
-                    {author}
-                  </td>
-                  <td
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setSelectedBookId(book_id);
-                      openModal(book_id);
-                    }}
-                    className='text-white pl-3 lg:pl-8 border border-white md:text-xl lg:text-2xl hover:bg-blue-500 cursor-pointer'
-                    >
-                    Reserved
-
-                    {selectedBookId ? (
-                      <Modal
-                        isOpen={isModalOpen}
-                        onClose={closeModal}
-                        book_id={selectedBookId}
-                      />
-                    ): ''}
-                  </td>
-                </tr>
-              </tbody>
+                    openModal(book_id)
+                  }}
+                  buttonText='Reserved'
+                />
+                {selectedBookId ? (
+                  <Modal
+                    isOpen={isModalOpen}
+                    onClose={closeModal}
+                    book_id={selectedBookId}
+                  />
+                ): ''}
+              </>
             ))}
           </table>
           :
           <p className='text-white mt-2'>At this moment, there are no available books. Please try again later.</p>
         }
         <div className='w-full m-4 flex justify-end mt-8'>
-          <button className='bg-blue-800 text-white w-[200px] md:w-[280px] h-8 rounded' onClick={() => navigate(-1)}>Back</button>
+          <button
+            className='bg-sky-600 text-white w-[200px] md:w-[280px] h-8 rounded mr-4 transition delay-300 hover:bg-sky-900'
+            onClick={() => navigate(-1)}
+          >
+            Back
+          </button>
+          <button
+            className='bg-blue-600 text-white w-[200px] md:w-[280px] h-8 rounded transition delay-300 hover:bg-blue-900'
+            onClick={() => handleChangeBooks()}
+          >
+            Available books
+          </button>
         </div>
       </div>
     </div>

@@ -20,10 +20,13 @@ export const userSlice = createSlice({
       state.user = user;
       state.isLoading = isLoading;
     },
+    stopLoading: (state, action) => {
+      state.isLoading = false;
+    }
   },
 });
 
-export const { setAddUser, isLoading } = userSlice.actions;
+export const { setAddUser, stopLoading, isLoading } = userSlice.actions;
 
 export default userSlice.reducer;
 

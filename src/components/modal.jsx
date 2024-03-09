@@ -21,14 +21,10 @@ const Modal = ({ isOpen, onClose, book_id }) => {
     '75f2be217c1_26227250_1794507963934400_6671023133488578560_n.jpg'
 
   const findBook = (books, bookId) => {
-    const findBook = books.find((book) => bookId === book.book_id);
-    if (findBook) {
-      return findBook;
-    } else {
-      return 'book not found';
-    }
-  };
+    const book = books.find((book) => bookId === book.book_id);
 
+    return book || { title: '', author: '', image_book: '', description: '' };
+  }
   const bookFiltered = findBook(books, book_id);
 
   useEffect(() => {
@@ -99,7 +95,7 @@ const Modal = ({ isOpen, onClose, book_id }) => {
 
       const bookCreated = result.createdBook;
 
-      dispatch(setCreateBook({ availableBooks: [bookCreated] }))
+      dispatch(setCreateBook({ availableBooks: [bookCreated], isLoading: false }))
 
       function closeModal() {
         onClose();
@@ -235,7 +231,6 @@ const Modal = ({ isOpen, onClose, book_id }) => {
                 >
                   {book_id ? 'Reserve' : 'Create Book'}
                 </button>
-
               </div>
               {message && <p className='w-full text- center text-black'>{message}</p>}
           </div>
