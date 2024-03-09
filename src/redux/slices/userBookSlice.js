@@ -40,9 +40,14 @@ export const userBooksSlice = createSlice({
       state.availableBooks = availableBooks;
       state.isLoading = false;
     },
+    setCreateBook: (state, action) => {
+      const { availableBooks } = action.payload;
+      state.availableBooks = [...state.availableBooks, ...availableBooks];
+      state.isLoading = false;
+    }
   },
 });
 
-export const { startLoading, setReservedBooks, setReturnBook, setAvailableBooks, setReservedBooksInfo } = userBooksSlice.actions;
+export const { startLoading, setReservedBooks, setReturnBook, setAvailableBooks, setReservedBooksInfo, setCreateBook } = userBooksSlice.actions;
 
 export default userBooksSlice.reducer;

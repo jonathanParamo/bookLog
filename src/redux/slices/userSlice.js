@@ -20,9 +20,6 @@ export const userSlice = createSlice({
       state.user = user;
       state.isLoading = isLoading;
     },
-    isLoading: (state) => {
-      state.isLoading = false;
-    },
   },
 });
 

@@ -109,7 +109,7 @@ const Books = () => {
                       <Modal
                         isOpen={isModalOpen}
                         onClose={closeModal}
-                        book_id={book_id}
+                        book_id={selectedBookId}
                       />
                     ): ''}
                   </td>
