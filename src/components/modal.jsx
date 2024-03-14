@@ -36,7 +36,7 @@ const Modal = ({ isOpen, onClose, book_id }) => {
   const handleBookReserved = async (e, book_id, user_id,) => {
     e.preventDefault();
     try {
-      const url = `http://localhost:8080/books/${book_id}/reserve/${user_id}`;
+      const url = process.env.REACT_APP_SERVER + `/books/${book_id}/reserve/${user_id}`;
 
       const response = await fetch(url, {
         method: 'POST',
@@ -73,7 +73,7 @@ const Modal = ({ isOpen, onClose, book_id }) => {
   const handleCreateBook = async (e, user_id, titleBook, imageBook, createBookDescription, authorBook, categoryBook) => {
     e.preventDefault();
     try {
-      const url = `http://localhost:8080/books/create/${user_id}`;
+      const url = process.env.REACT_APP_SERVER + `/books/create/${user_id}`;
 
       const response = await fetch(url, {
         method: 'POST',

@@ -15,7 +15,7 @@ const Books = () => {
   const [getBooks, setGetBooks] = useState(false);
 
   const fetchCategoryBooks = async (selectedValue, token) => {
-    const url = `http://localhost:8080/books/category/${selectedValue}`
+    const url = process.env.REACT_APP_SERVER + "/books/category/" + selectedValue;
     const response = await fetch(url, {
       method: 'GET',
       headers: {
@@ -72,7 +72,7 @@ const Books = () => {
     };
 
     const fetchData = async (token) => {
-      const url = 'http://localhost:8080/books/available';
+      const url = process.env.REACT_APP_SERVER +'/books/available';
       const response = await fetch(url, {
         method: 'GET',
         headers: {
@@ -134,6 +134,7 @@ const Books = () => {
             {books.map(({ title, book_id, author }) => (
               <>
                 <Table
+                  key={book_id}
                   title={title}
                   book_id={book_id}
                   author={author}
