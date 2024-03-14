@@ -39,7 +39,6 @@ const UserProfile = () => {
     e.preventDefault();
     setLoading(true);
     const result = await dispatch(returnBook({book_id, user_id, token}));
-    console.log(result, "result");
 
     try {
       if (result.data.success) {
