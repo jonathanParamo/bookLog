@@ -7,7 +7,7 @@ export const createUser = ({ email, password, username }) => {
   return async (dispatch, getState) => {
     dispatch(isLoading());
     try {
-      const response = await signupApi.post('/signup', {
+      const response = await signupApi.post('signup', {
         username,
         email,
         password,
@@ -24,7 +24,7 @@ export const enterUser = ({ email = '', password, username = '' }) => {
   return async (dispatch, getState) => {
     dispatch(isLoading());
     try {
-      const response = await signinApi.post('/signin', {
+      const response = await signinApi.post('signin', {
         username,
         email,
         password,
