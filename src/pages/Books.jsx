@@ -15,7 +15,7 @@ const Books = () => {
   const [getBooks, setGetBooks] = useState(false);
 
   const fetchCategoryBooks = async (selectedValue, token) => {
-    const url = process.env.REACT_APP_SERVER + "/books/category/" + selectedValue;
+    const url = process.env.REACT_APP_SERVER + "books/category/" + selectedValue;
     const response = await fetch(url, {
       method: 'GET',
       headers: {
@@ -72,7 +72,7 @@ const Books = () => {
     };
 
     const fetchData = async (token) => {
-      const url = process.env.REACT_APP_SERVER +'/books/available';
+      const url = process.env.REACT_APP_SERVER +'books/available';
       const response = await fetch(url, {
         method: 'GET',
         headers: {
@@ -123,12 +123,12 @@ const Books = () => {
         </seccion>
 
         {isData ?
-          <table className='w-full text-white border border-white mt-8'>
-          <thead className='border border-white'>
+          <table className='w-full text-white border mt-8'>
+          <thead className='border border-[#f5f5f590] bg-[#f5f5f517]'>
             <tr>
-              <th className='border border-white md:text-xl lg:text-3xl'>Title</th>
-              <th className='border border-white md:text-xl lg:text-3xl'>Author</th>
-              <th className='border border-white md:text-xl lg:text-3xl'>Action</th>
+              <th className='md:text-xl lg:text-3xl text-start pl-2 lg:pl-8'>Title</th>
+              <th className='md:text-xl lg:text-3xl text-start pl-2 lg:pl-8'>Author</th>
+              <th className='md:text-xl lg:text-3xl text-start pl-2 lg:pl-8'>Action</th>
             </tr>
           </thead>
             {books.map(({ title, book_id, author }) => (

@@ -39,7 +39,6 @@ const UserProfile = () => {
     e.preventDefault();
     setLoading(true);
     const result = await dispatch(returnBook({book_id, user_id, token}));
-
     try {
       if (result.data.success) {
         setMessage('Book as returned successfully');
@@ -62,16 +61,17 @@ const UserProfile = () => {
     reservedBooks.some(book => book.title !== null && book.author !== null && book.book_id !== null);
 
   const matchUsedId = user_id === 2;
+  const dataReservedBooks = reservedBooks[0]?.title === null;
 
   return (
     <div className='min-h-screen bg-black flex flex-col p-4 md:p-8'>
       <div className='w-full h-52 md:h-72 flex flex-row justify-between'>
-        <div className='w-36 md:w-72 lg:w-1/3 flex flex-col'>
-          <p className='text-white text-base md:text-2xl lg:text-5xl'>Username: {username}</p>
-          <p className='text-white text-base md:text-2xl lg:text-5xl'>My reservations: {reservedBooks ? reservedBooks.length : 0}</p>
+        <div className='w-36 md:w-72 lg:w-1/3 flex flex-col mr-2 grid'>
+          <p className='text-white text-sm md:text-2xl lg:text-5xl'>Username: {username}</p>
+          <p className='text-white text-sm md:text-2xl lg:text-5xl'>My reservations: {dataReservedBooks ? 0 : reservedBooks.length}</p>
           {matchUsedId &&
             <button
-              className='w-80 h-8 md:w-3/5 mt-2 text-black bg-cyan-500 rounded hover:bg-cyan-600'
+              className='w-full h-8 md:w-3/5 mt-2 text-black bg-cyan-500 rounded hover:bg-cyan-600 mb-6'
               onClick={() => openModal(true)}
             >
               Create Book
@@ -79,7 +79,7 @@ const UserProfile = () => {
           }
         </div>
         <img
-          className='w-[190px] md:w-[280px] h-[190px] md:h-[280px] rounded'
+          className='w-[160px] md:w-[270px] h-[190px] h-[150px] md:h-[280px] rounded'
           src={profile_image || noImgageProfile}
           alt='UserProfile'
         />

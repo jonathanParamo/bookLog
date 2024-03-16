@@ -20,11 +20,12 @@ const Modal = ({ isOpen, onClose, book_id }) => {
   const imageCreatBook = 'https://uploads-ssl.webflow.com/5e86c7170f1ab21474c3f2a4/5efc63ccabeea' +
     '75f2be217c1_26227250_1794507963934400_6671023133488578560_n.jpg'
 
-  const findBook = (books, bookId) => {
-    const book = books.find((book) => bookId === book.book_id);
+    const findBook = (books, bookId) => {
+      const book = books.find(book => bookId === book.book_id);
 
-    return book || { title: '', author: '', image_book: '', description: '' };
-  }
+      return book || { title: '', author: '', image_book: '', description: '' };
+    };
+
   const bookFiltered = findBook(books, book_id);
 
   useEffect(() => {
@@ -36,7 +37,7 @@ const Modal = ({ isOpen, onClose, book_id }) => {
   const handleBookReserved = async (e, book_id, user_id,) => {
     e.preventDefault();
     try {
-      const url = process.env.REACT_APP_SERVER + `/books/${book_id}/reserve/${user_id}`;
+      const url = process.env.REACT_APP_SERVER + `books/${book_id}/reserve/${user_id}`;
 
       const response = await fetch(url, {
         method: 'POST',
@@ -70,15 +71,16 @@ const Modal = ({ isOpen, onClose, book_id }) => {
     }
   };
 
-  const handleCreateBook = async (e, user_id, titleBook, imageBook, createBookDescription, authorBook, categoryBook) => {
+  const handleCreateBook = async (e, user_id, titleBook, imageBook, createBookDescription, authorBook, categoryBook, token) => {
     e.preventDefault();
     try {
-      const url = process.env.REACT_APP_SERVER + `/books/create/${user_id}`;
+      const url = process.env.REACT_APP_SERVER + `books/create/${user_id}`;
 
       const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify({
           title: titleBook,
@@ -92,7 +94,6 @@ const Modal = ({ isOpen, onClose, book_id }) => {
         setMessage( response.statusText);
       }
       const result = await response.json();
-
       const bookCreated = result.createdBook;
 
       dispatch(setCreateBook({ availableBooks: [bookCreated], isLoading: false }))
@@ -114,7 +115,7 @@ const Modal = ({ isOpen, onClose, book_id }) => {
       {isOpen && (
         <>
           <div
-            className='fixed inset-0 bg-black bg-opacity-20'
+            className='fixed inset-0 bg-black bg-opacity-90'
             onClick={() => {
               if (isOpen) {
                 onClose();
@@ -123,7 +124,7 @@ const Modal = ({ isOpen, onClose, book_id }) => {
             aria-hidden='true'
           />
           <div className='relative z-10 w-4/5 lg:w-3/5 h-[650px] bg-white p-4 rounded-lg shadow-md overflow-auto'>
-              <div className='flex flex-col justify-between items-center m-4'>
+              <div className='flex flex-col justify-between items-center mb-2 mx-4'>
                 {book_id ?
                   <h2 className='text-2xl font-bold text-black'>{title.toUpperCase()}</h2>
                   :
@@ -137,13 +138,13 @@ const Modal = ({ isOpen, onClose, book_id }) => {
                       className='w-32 h-32 rounded'
                     />
                     <seccion className='w-full mt-8 flex justify-between items-center px-8'>
-                      <label htmlFor='title' className='text-lg'>Title:</label>
+                      <label htmlFor='title' className='text-lg xs:hidden sm:block'>Title:</label>
                       <input
                         type='text'
                         id='title'
                         placeholder='Title'
                         onChange={(e) => setTitleBook(e.target.value)}
-                        className='w-2/3 mb-4 p-2  border border-stone-950 rounded-md focus:outline-none'
+                        className='w-full sm:w-2/3 mb-4 p-2  border border-stone-950 rounded-md focus:outline-none'
                       />
                     </seccion>
                   </section>
@@ -155,13 +156,13 @@ const Modal = ({ isOpen, onClose, book_id }) => {
                   </>
                   :
                   <section className='w-full mt-2 flex justify-between items-center px-8'>
-                    <label htmlFor='author' className='text-lg'>Author:</label>
+                    <label htmlFor='author' className='text-lg xs:hidden sm:block'>Author:</label>
                     <input
                       type='text'
                       id='author'
                       placeholder='Author'
                       onChange={(e) => setAuthorBook(e.target.value)}
-                      className='w-2/3 mb-4 p-2  border border-stone-950 rounded-md focus:outline-none'
+                      className='w-full sm:w-2/3 mb-4 p-2  border border-stone-950 rounded-md focus:outline-none'
                     />
                   </section>
                 }
@@ -176,45 +177,46 @@ const Modal = ({ isOpen, onClose, book_id }) => {
                   />
                 </div>
                 :
-                <section className='w-full mt-2 flex justify-between items-center px-12'>
-                  <label htmlFor='image'>Image</label>
+                <section className='w-full mt-1 flex justify-between items-center px-12'>
+                  <label htmlFor='image' className='hidden sm:block'>Image</label>
                   <input
                     type='text'
                     id='image'
                     placeholder='Link image'
                     onChange={(e) => setImageBook(e.target.value)}
-                    className='w-2/3 mb-4 p-2  border border-stone-950 rounded-md focus:outline-none'
+                    className='w-full sm:w-2/3 mb-4 p-2  border border-stone-950 rounded-md focus:outline-none'
                   />
                 </section>
               }
               {!book_id &&
                 <section className='w-full mt-2 flex justify-between items-center px-12 '>
-                  <label htmlFor='description'>Description:</label>
+                  <label htmlFor='description' className='hidden sm:block'>Description:</label>
                   <textarea
                     name="description"
                     id="description"
+                    placeholder='Description'
                     cols="30"
                     rows="3"
                     onChange={(e) => setCreateBookDescription(e.target.value)}
-                    className='w-2/3 mb-4 p-2  border border-stone-950 rounded-md resize-none focus:outline-none'
+                    className='w-full sm:w-2/3 mb-4 p-2  border border-stone-950 rounded-md resize-none focus:outline-none'
                   />
                 </section>
               }
               {!book_id &&
                 <section className='w-full mt-2 flex justify-between items-center px-12'>
-                  <label htmlFor='category' className='text-lg'>Category:</label>
+                  <label htmlFor='category' className='text-lg hidden sm:block'>Category:</label>
                   <input
                     type='text'
                     id='category'
                     placeholder='Category'
                     onChange={(e) => setCategoryBook(e.target.value)}
-                    className='w-2/3 mb-4 p-2  border border-stone-950 rounded-md focus:outline-none'
+                    className='w-full sm:w-2/3 mb-1 p-2  border border-stone-950 rounded-md focus:outline-none'
                   />
                 </section>
               }
               <div className='w-full h-18 flex flex-row justify-between px-12'>
                 <button
-                  className='w-4/12 md:w-2/5 h-8 mt-6 text-white bg-red-500 rounded hover:bg-red-700'
+                  className='w-5/12 md:w-2/5 h-8 mt-6 text-white bg-red-500 rounded hover:bg-red-700'
                   onClick={() => onClose()}
                 >
                   Close
@@ -224,10 +226,10 @@ const Modal = ({ isOpen, onClose, book_id }) => {
                     if (book_id) {
                       handleBookReserved(e, book_id, user_id, token,)
                     } else {
-                      handleCreateBook(e, user_id, titleBook, imageBook, createBookDescription, authorBook, categoryBook)
+                      handleCreateBook(e, user_id, titleBook, imageBook, createBookDescription, authorBook, categoryBook, token)
                     }
                   }}
-                  className='w-4/12 h-8 md:w-2/5 mt-6 text-white bg-blue-500 rounded hover:bg-blue-700'
+                  className='w-5/12 h-8 md:w-2/5 mt-6 text-white bg-blue-500 rounded hover:bg-blue-700'
                 >
                   {book_id ? 'Reserve' : 'Create Book'}
                 </button>
