@@ -31,7 +31,11 @@ export const userBooksSlice = createSlice({
       const returnedBook = state.reservedBooks.find((book) => book.book_id === bookId);
       if (returnedBook) {
         state.reservedBooks = state.reservedBooks.filter((book) => book.book_id !== bookId);
-        state.availableBooks = [...state.availableBooks, returnedBook];
+        if (state.availableBooks) {
+          state.availableBooks = [...state.availableBooks, returnedBook];
+        } else {
+          state.availableBooks = [returnedBook];
+        }
       }
       state.isLoading = false;
     },
