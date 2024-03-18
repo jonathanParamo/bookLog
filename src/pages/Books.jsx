@@ -107,11 +107,10 @@ const Books = () => {
           className='w-full flex justify-end bg-black mt-2 md:mt-6'
         >
           <seccion className='border border-blue-600 p-1 rounded'>
-            <label className='text-white bg-black mr-2' for='books'>Search for category</label>
-            <select className='text-white bg-black w-[200px] md:w-[240px]'
+            <select className='text-white bg-black w-[200px] md:w-[240px] border-none focus:outline-none'
               name='Books' id='books'  onChange={handleChange}
             >
-              <option>Select a category</option>
+              <option>Book category</option>
               <option value='coming-of-age'>Coming of age</option>
               <option value='love'>Love</option>
               <option value='science-fiction'>Science fiction</option>
