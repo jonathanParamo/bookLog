@@ -123,7 +123,10 @@ const Modal = ({ isOpen, onClose, book_id }) => {
             }}
             aria-hidden='true'
           />
-          <div className='relative z-10 w-4/5 lg:w-3/5 h-[650px] bg-white p-4 rounded-lg shadow-md overflow-auto'>
+          <div
+            className='relative z-10 w-4/5 lg:w-3/5 h-[650px] bg-white p-4 rounded-lg shadow-md overflow-auto
+              md:overflow-hidden
+            '>
               <div className='flex flex-col justify-between items-center mb-2 mx-4'>
                 {book_id ?
                   <h2 className='text-2xl font-bold text-black'>{title.toUpperCase()}</h2>
@@ -144,7 +147,7 @@ const Modal = ({ isOpen, onClose, book_id }) => {
                         id='title'
                         placeholder='Title'
                         onChange={(e) => setTitleBook(e.target.value)}
-                        className='w-full sm:w-2/3 mb-4 p-2  border border-stone-950 rounded-md focus:outline-none'
+                        className='w-full sm:w-2/3 mb-3 p-2  border border-stone-950 rounded-md focus:outline-none'
                       />
                     </seccion>
                   </section>
@@ -162,7 +165,7 @@ const Modal = ({ isOpen, onClose, book_id }) => {
                       id='author'
                       placeholder='Author'
                       onChange={(e) => setAuthorBook(e.target.value)}
-                      className='w-full sm:w-2/3 mb-4 p-2  border border-stone-950 rounded-md focus:outline-none'
+                      className='w-full sm:w-2/3 mb-3 p-2  border border-stone-950 rounded-md focus:outline-none'
                     />
                   </section>
                 }
@@ -184,7 +187,7 @@ const Modal = ({ isOpen, onClose, book_id }) => {
                     id='image'
                     placeholder='Link image'
                     onChange={(e) => setImageBook(e.target.value)}
-                    className='w-full sm:w-2/3 mb-4 p-2  border border-stone-950 rounded-md focus:outline-none'
+                    className='w-full sm:w-2/3 mb-3 p-2  border border-stone-950 rounded-md focus:outline-none'
                   />
                 </section>
               }
@@ -196,9 +199,9 @@ const Modal = ({ isOpen, onClose, book_id }) => {
                     id="description"
                     placeholder='Description'
                     cols="30"
-                    rows="3"
+                    rows="2"
                     onChange={(e) => setCreateBookDescription(e.target.value)}
-                    className='w-full sm:w-2/3 mb-4 p-2  border border-stone-950 rounded-md resize-none focus:outline-none'
+                    className='w-full sm:w-2/3 mb-3 p-2  border border-stone-950 rounded-md resize-none focus:outline-none'
                   />
                 </section>
               }
@@ -216,7 +219,10 @@ const Modal = ({ isOpen, onClose, book_id }) => {
               }
               <div className='w-full h-18 flex flex-row justify-between px-12'>
                 <button
-                  className='w-5/12 md:w-2/5 h-8 mt-6 text-white bg-red-500 rounded hover:bg-red-700'
+                  className='
+                    w-5/12 md:w-2/5 h-8 mt-6 text-white border bg-red-500 rounded duration-500 hover:bg-white
+                    hover:text-red-800 hover:border-red-600
+                  '
                   onClick={() => onClose()}
                 >
                   Close
@@ -226,10 +232,14 @@ const Modal = ({ isOpen, onClose, book_id }) => {
                     if (book_id) {
                       handleBookReserved(e, book_id, user_id, token,)
                     } else {
-                      handleCreateBook(e, user_id, titleBook, imageBook, createBookDescription, authorBook, categoryBook, token)
+                      handleCreateBook(e, user_id, titleBook, imageBook, createBookDescription,
+                        authorBook, categoryBook, token)
                     }
                   }}
-                  className='w-5/12 h-8 md:w-2/5 mt-6 text-white bg-blue-500 rounded hover:bg-blue-700'
+                  className='
+                    w-5/12 h-8 md:w-2/5 mt-6 text-blue-800 border border-blue-700 rounded duration-500
+                    hover:text-white hover:bg-blue-600
+                  '
                 >
                   {book_id ? 'Reserve' : 'Create Book'}
                 </button>
